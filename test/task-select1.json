@@ -1,0 +1,26 @@
+{
+    "process": [
+        "loader",
+        "mapper",
+        "writer"
+    ],
+    "loader": {
+        "add_id": false,
+        "source": {
+            "type": "file",
+            "file": {
+                "path": "test/test-geodata.json"
+            }
+        }
+    },
+    "mapper": {
+        "pipes": "select",
+        "select": {
+            "fields": ["id","name"]
+        }
+    },
+    "writer": {
+        "_output": null,
+        "targets": "console"
+    }
+}

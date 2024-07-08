@@ -1,0 +1,34 @@
+{
+    "process": [
+        "loader",
+        "mapper",
+        "writer"
+    ],
+    "loader": {
+        "add_id": false,
+        "source": {
+            "type": "file",
+            "file": {
+                "path": "test/test-geodata.json"
+            }
+        }
+    },
+    "mapper": {
+        "pipes": [
+            "filter"
+        ],
+        "filter": {
+            "mode": "all",
+            "fields": ["id","name","lonlat"]
+        }
+    },
+    "writer": {
+        "_output": null,
+        "targets": ["file"],
+        "file": {
+            "format": "jsonl",
+            "path": "tmp/test-geodata.json",
+            "open_mode": "create"
+        }
+    }
+}

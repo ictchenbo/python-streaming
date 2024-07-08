@@ -1,0 +1,110 @@
+{
+    "start": null,
+    "process": [
+        "loader",
+        "mapper1",
+        "parser",
+        "mapper",
+        "writer"
+    ],
+    "loader": {
+        "source": {
+            "type": "file",
+            "file": {
+                "path": "E:\\台湾凤梨非机构化数据\\data1",
+                "allow": true,
+                "include": [],
+                "exclude": [],
+                "name_as_title": true
+            },
+            "db": {
+                "type": "mysql",
+                "table": []
+            }
+        },
+        "add_id": true
+    },
+    "mapper1": {
+        "_module": "mapper.run",
+        "pipes": [
+            "content", "select"
+        ],
+        "content": {
+            "fields": ["cont", "content"]
+        },
+        "select": {
+            "keep_all": true,
+            "fields": []
+        }
+    },
+    "parser": {
+        "_module": "my_parser.run",
+        "batch": 200,
+        "name": "corenlu",
+        "service": "http://117.160.193.19:9080/nlu_inte",
+        "timeout": 180,
+        "tasks": [
+            "ner",
+            "nel",
+            "event",
+            "topic",
+            "sentiment"
+        ],
+        "lang": "zh",
+        "parse_fields": [
+            "content"
+        ],
+        "max_docs": 20,
+        "max_length": 1500,
+        "parallels": 10,
+        "repeat_count": 3
+    },
+    "mapper": {
+        "pipes": [
+            "graph",
+            "geo",
+            "goin_graph",
+            "rm_docfields"
+        ],
+        "graph": {
+            "parser_field": "content",
+            "keep_parse_field": false,
+            "entity_linking": true,
+            "shift_fields": [
+                "topic",
+                "sentiment",
+                "keywords"
+            ]
+        },
+        "geo": {
+        },
+        "rm_docfields": {
+            "nlu_fields": true,
+            "fields": []
+        }
+    },
+    "writer": {
+        "targets": [
+            "kg_instance"
+        ],
+        "file": {
+            "format": "jsonl",
+            "path": "/Users/chenbo/data/testout.jsonl",
+            "open_mode": "append"
+        },
+        "kg_instance": {
+            "service": "http://127.0.0.1:8881/goin_instance/v1.0/graphs/_publish",
+            "user_id": "42a4b1fa295206ed27df6720e68330a1",
+            "dataset_id": 5273,
+            "dataset_name": "国内外新闻报道"
+        },
+        "mongo": {
+            "host": "127.0.0.1",
+            "port": "27017",
+            "user": "admin",
+            "password": "123456",
+            "db": "goin_data1",
+            "table": "table1"
+        }
+    }
+}

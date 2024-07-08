@@ -1,0 +1,19 @@
+{
+    "process": [
+        "loader",
+        "writer"
+    ],
+    "loader": {
+        "add_id": false,
+        "source": {
+            "type": "file",
+            "file": {
+                "path": "test/test-geodata.json"
+            }
+        }
+    },
+    "writer": {
+        "_output": null,
+        "targets": ["console"]
+    }
+}
